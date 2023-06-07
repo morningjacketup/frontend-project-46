@@ -4,32 +4,30 @@ const stringify = (value) => {
   if (_.isObject(value)) {
     return '[complex value]';
   }
-  if (_.isString(value)) {
-    return `'${value}'`;
-  }
-  return String(value);
+  return typeof value === 'string' ? `'${value}'` : `${value}`;
 };
 
-const getPath = (path, key) => [...path, key];
+const getPath = (node, path) => (node.type === 'nested' ? `${path}${node.key}.` : `${path}${node.key}`);
 
-const formatPlain = (data, path = []) => {
-  const result = data.map((node) => {
-    switch (node.type) {
-      case 'nestead':
-        return formatPlain(node.children, getPath(path, node.key));
-      case 'added':
-        return `Property '${getPath(path, node.key).join('.')}' was added with value: ${stringify(node.value)}`;
-      case 'deleted':
-        return `Property '${getPath(path, node.key).join('.')}' was removed`;
-      case 'changed':
-        return `Property '${getPath(path, node.key).join('.')}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`;
-      default: {
-        return null;
+const plain = (differenceTree) => {
+  const iter = (differenceNodes, path) => {
+    const result = differenceNodes.map((node) => {
+      const currentPath = getPath(node, path);
+      switch (node.type) {
+        case 'nested':
+          return iter(node.children, currentPath);
+        case 'added':
+          return `Property '${currentPath}' was added with value: ${stringify(node.value)}`;
+        case 'deleted':
+          return `Property '${currentPath}' was removed`;
+        case 'changed':
+          return `Property '${currentPath}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`;
+        default: return '';
       }
-    }
-  });
-  const iter = result.filter(Boolean).join('\n');
-  return iter;
+    });
+    return result.filter((line) => line !== '').join('\n');
+  };
+  return iter(differenceTree, '');
 };
 
-export default formatPlain;
+export default plain;
