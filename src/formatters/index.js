@@ -6,14 +6,10 @@ const getFormat = (data, output = 'stylish') => {
   switch (output) {
     case 'plain':
       return formatPlain(data);
-    case 'stylish':
-      return formatStylish(data);
     case 'json':
       return formatJson(data);
-    case '':
-      return formatStylish(data);
     default:
-      throw new Error(`Unknown format: ${output}`);
+      return formatStylish(data);
   }
 };
 export default getFormat;
