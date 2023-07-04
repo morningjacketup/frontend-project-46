@@ -34,5 +34,5 @@ test.each([
 ])('compare %p %p %p %p', (file1, file2, format, expectedResult) => {
   const receieved = genDiff(getFixturePath(file1), getFixturePath(file2), format);
   const expected = readFile(expectedResult);
-  expect(expected).toEqual(receieved);
+  expect(receieved).toEqual(expected);
 });
