@@ -20,8 +20,8 @@ const JSONData = genDiff(jsonPath1, jsonPath2, 'json');
 const JSONDataYML = genDiff(yamlPath1, yamlPath2, 'json');
 
 test('test json to not throw', () => {
-  expect(() => (JSON.parse(JSONData)).not.toThrow());
-  expect(() => (JSON.parse(JSONDataYML)).not.toThrow());
+  expect(JSON.parse(JSONData).not.toThrow());
+  expect(JSON.parse(JSONDataYML).not.toThrow());
 });
 
 test.each([
