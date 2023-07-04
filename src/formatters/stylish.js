@@ -34,8 +34,8 @@ const iter = (obj, depth) => {
         return `${indent(depth)}  ${node.key}: ${stringify(node.value, depth)}`;
       }
       case 'changed': {
-        const output1 = `${indent(depth)}- ${node.key}: ${stringify(node.oldValue, depth)}`;
-        const output2 = `${indent(depth)}+ ${node.key}: ${stringify(node.newValue, depth)}`;
+        const output1 = `${indent(depth)}- ${node.key}: ${stringify(node.value1, depth)}`;
+        const output2 = `${indent(depth)}+ ${node.key}: ${stringify(node.value2, depth)}`;
         return `${output1}\n${output2}`;
       }
       default: {

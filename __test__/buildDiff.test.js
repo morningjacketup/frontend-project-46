@@ -16,23 +16,23 @@ const jsonPath2 = getFixturePath('file2.json');
 const yamlPath1 = getFixturePath('file1.yml');
 const yamlPath2 = getFixturePath('file2.yml');
 
-const stylishResult = readFile('stylishResult.txt');
+const JSONData = genDiff(jsonPath1, jsonPath2, 'json');
+const JSONDataYML = genDiff(yamlPath1, yamlPath2, 'json');
 
-test('displaying file differences in stylish form', () => {
-  expect(genDiff(jsonPath1, jsonPath2)).toBe(stylishResult);
-  expect(genDiff(yamlPath1, yamlPath2)).toBe(stylishResult);
+test('test json to not throw', () => {
+  expect(() => (JSON.parse(JSONData)).not.toThrow());
+  expect(() => (JSON.parse(JSONDataYML)).not.toThrow());
 });
 
-const plainResult = readFile('plainResult.txt');
-
-test('displaying file differences in plain form', () => {
-  expect(genDiff(jsonPath1, jsonPath2, 'plain')).toBe(plainResult);
-  expect(genDiff(yamlPath1, yamlPath2, 'plain')).toBe(plainResult);
-});
-
-const jsonResult = readFile('jsonResult.txt');
-
-test('displaying file differences in json form', () => {
-  expect(genDiff(jsonPath1, jsonPath2, 'json')).toBe(jsonResult);
-  expect(genDiff(yamlPath1, yamlPath2, 'json')).toBe(jsonResult);
+test.each([
+  ['file1.json', 'file2.json', 'stylish', 'stylishResult.txt'],
+  ['file1.json', 'file2.json', 'plain', 'plainResult.txt'],
+  ['file1.json', 'file2.json', 'json', 'jsonResult.txt'],
+  ['file1.yml', 'file2.yml', 'stylish', 'stylishResult.txt'],
+  ['file1.yml', 'file2.yml', 'plain', 'plainResult.txt'],
+  ['file1.yml', 'file2.yml', 'json', 'jsonResult.txt'],
+])('compare %p %p %p %p', (file1, file2, format, expectedResult) => {
+  const receieved = genDiff(getFixturePath(file1), getFixturePath(file2), format);
+  const expected = readFile(expectedResult);
+  expect(receieved).toEqual(expected);
 });

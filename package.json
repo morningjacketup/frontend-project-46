@@ -1,7 +1,7 @@
 {
 	"name": "@hexlet/code",
 	"version": "1.0.0",
-	"description": "[![Actions Status](https://github.com/morningjacketup/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/morningjacketup/frontend-project-46/actions)",
+	"description": "Вычислитель отличий - cli программа для поиска различий между двумя json или yml форматов в разных стилях",
 	"main": "index.js",
 	"scripts": {
 		"test": "npx jest"

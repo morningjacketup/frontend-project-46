@@ -1,33 +1,36 @@
 import _ from 'lodash';
 
 const stringify = (value) => {
-  if (_.isObject(value)) {
+  if (_.isPlainObject(value)) {
     return '[complex value]';
   }
-  return typeof value === 'string' ? `'${value}'` : `${value}`;
+  return (_.isString(value) ? `'${value}'` : value);
 };
 
-const getPath = (node, path) => (node.type === 'nested' ? `${path}${node.key}.` : `${path}${node.key}`);
+export default (object) => {
+  const iter = (tree, path) => tree
+    .flatMap((node) => {
+      const {
+        key, value, type, value1, value2,
+      } = node;
+      const newAncestry = `${path}${key}`;
 
-const plain = (differenceTree) => {
-  const iter = (differenceNodes, path) => {
-    const result = differenceNodes.map((node) => {
-      const currentPath = getPath(node, path);
-      switch (node.type) {
-        case 'nested':
-          return iter(node.children, currentPath);
+      switch (type) {
         case 'added':
-          return `Property '${currentPath}' was added with value: ${stringify(node.value)}`;
+          return `Property '${newAncestry}' was added with value: ${stringify(value)}`;
         case 'deleted':
-          return `Property '${currentPath}' was removed`;
-        case 'changed':
-          return `Property '${currentPath}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`;
-        default: return '';
+          return `Property '${newAncestry}' was removed`;
+        case 'nested':
+          return `${iter(node.children, `${newAncestry}.`)}`;
+        case 'unchanged':
+          return [];
+        case 'changed': {
+          return `Property '${newAncestry}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
+        }
+        default:
+          throw new Error(`Status ${type} - is invalid`);
       }
-    });
-    return result.filter((line) => line !== '').join('\n');
-  };
-  return iter(differenceTree, '');
-};
+    }).join('\n');
 
-export default plain;
+  return iter(object, '');
+};
