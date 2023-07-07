@@ -8,8 +8,10 @@ const getFormat = (data, output = 'stylish') => {
       return formatPlain(data);
     case 'json':
       return formatJson(data);
-    default:
+    case 'stylish':
       return formatStylish(data);
+    default:
+      throw new Error(`${output} format is not supported`);
   }
 };
 export default getFormat;

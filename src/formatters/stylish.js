@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
-const indent = (depth) => {
-  if (depth < 1) return '';
+const calcIndent = (depth) => {
   const spacesCount = 4;
   const replacer = ' ';
   return replacer.repeat(spacesCount * depth - 2);
@@ -12,8 +11,8 @@ const stringify = (data, depth) => {
     return `${data}`;
   }
   const entries = Object.entries(data);
-  const result = entries.map(([key, value]) => `${indent(depth + 1)}  ${key}: ${stringify(value, depth + 1)}`);
-  const lines = ['{', ...result, `${indent(depth)}  }`].join('\n');
+  const result = entries.map(([key, value]) => `${calcIndent(depth + 1)}  ${key}: ${stringify(value, depth + 1)}`);
+  const lines = ['{', ...result, `${calcIndent(depth)}  }`].join('\n');
   return lines;
 };
 
@@ -21,21 +20,21 @@ const iter = (obj, depth) => {
   const result = obj.map((node) => {
     switch (node.type) {
       case 'added': {
-        return `${indent(depth)}+ ${node.key}: ${stringify(node.value, depth)}`;
+        return `${calcIndent(depth)}+ ${node.key}: ${stringify(node.value, depth)}`;
       }
       case 'deleted': {
-        return `${indent(depth)}- ${node.key}: ${stringify(node.value, depth)}`;
+        return `${calcIndent(depth)}- ${node.key}: ${stringify(node.value, depth)}`;
       }
       case 'nested': {
         const output = iter(node.children, depth + 1);
-        return `${indent(depth)}  ${node.key}: {\n${output.join('\n')}\n${indent(depth)}  }`;
+        return `${calcIndent(depth)}  ${node.key}: {\n${output.join('\n')}\n${calcIndent(depth)}  }`;
       }
       case 'unchanged': {
-        return `${indent(depth)}  ${node.key}: ${stringify(node.value, depth)}`;
+        return `${calcIndent(depth)}  ${node.key}: ${stringify(node.value, depth)}`;
       }
       case 'changed': {
-        const output1 = `${indent(depth)}- ${node.key}: ${stringify(node.value1, depth)}`;
-        const output2 = `${indent(depth)}+ ${node.key}: ${stringify(node.value2, depth)}`;
+        const output1 = `${calcIndent(depth)}- ${node.key}: ${stringify(node.value1, depth)}`;
+        const output2 = `${calcIndent(depth)}+ ${node.key}: ${stringify(node.value2, depth)}`;
         return `${output1}\n${output2}`;
       }
       default: {

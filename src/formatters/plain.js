@@ -1,36 +1,45 @@
 import _ from 'lodash';
 
 const stringify = (value) => {
-  if (_.isPlainObject(value)) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
-  return (_.isString(value) ? `'${value}'` : value);
+  return (_.isString(value) ? `'${value}'` : `${value}`);
 };
 
-export default (object) => {
-  const iter = (tree, path) => tree
-    .flatMap((node) => {
-      const {
-        key, value, type, value1, value2,
-      } = node;
-      const newAncestry = `${path}${key}`;
+const iter = (tree, basePath) => {
+  const onlyChangedProperties = tree.filter(
+    (node) => node.type !== 'unchanged',
+  );
+  const output = onlyChangedProperties
+    .map((node) => {
+      const currentPath = [...basePath, node.key];
+      const property = currentPath.join('.');
 
-      switch (type) {
+      switch (node.type) {
         case 'added':
-          return `Property '${newAncestry}' was added with value: ${stringify(value)}`;
-        case 'deleted':
-          return `Property '${newAncestry}' was removed`;
-        case 'nested':
-          return `${iter(node.children, `${newAncestry}.`)}`;
-        case 'unchanged':
-          return [];
-        case 'changed': {
-          return `Property '${newAncestry}' was updated. From ${stringify(value1)} to ${stringify(value2)}`;
-        }
-        default:
-          throw new Error(`Status ${type} - is invalid`);
-      }
-    }).join('\n');
+          return `Property '${property}' was added with value: ${stringify(
+            node.value,
+          )}`;
 
-  return iter(object, '');
+        case 'deleted':
+          return `Property '${property}' was removed`;
+
+        case 'changed':
+          return `Property '${property}' was updated. From ${stringify(
+            node.value1,
+          )} to ${stringify(node.value2)}`;
+        case 'nested':
+          return iter(node.children, currentPath);
+        default:
+          throw new Error('This state is not supported.');
+      }
+    })
+    .join('\n');
+
+  return output;
 };
+
+const format = (tree) => iter(tree, []);
+
+export default format;

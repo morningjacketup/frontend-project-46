@@ -6,7 +6,7 @@ import getFormat from './formatters/index.js';
 
 const buildPath = (filepath) => path.resolve(process.cwd(filepath), filepath);
 
-const getFileFormat = (filepath) => path.extname(filepath);
+const getFileFormat = (filepath) => path.extname(filepath).split('.')[1];
 
 const getData = (filepath) => parse(fs.readFileSync(filepath, 'utf8'), getFileFormat(filepath));
 
