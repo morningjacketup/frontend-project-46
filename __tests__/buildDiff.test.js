@@ -20,6 +20,7 @@ test.each([
   const expectedPlain = readFile('plainResult.txt');
   const expectedStylish = readFile('stylishResult.txt');
 
+  expect(genDiff(filepath1, filepath2)).toEqual(expectedStylish);
   expect(genDiff(filepath1, filepath2, 'plain')).toEqual(expectedPlain);
   expect(genDiff(filepath1, filepath2, 'stylish')).toEqual(expectedStylish);
   expect(() => genDiff(filepath1, filepath2, 'json')).not.toThrow();
