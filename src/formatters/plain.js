@@ -21,10 +21,8 @@ const iter = (tree, basePath) => {
           return `Property '${property}' was added with value: ${stringify(
             node.value,
           )}`;
-
         case 'deleted':
           return `Property '${property}' was removed`;
-
         case 'changed':
           return `Property '${property}' was updated. From ${stringify(
             node.value1,
