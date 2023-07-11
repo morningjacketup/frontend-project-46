@@ -32,7 +32,7 @@
 ```
   node bin/gendiff.js -options filepath1 filepath2
   OR
-  make gendiff
+  make gendiff -options filepath1 filepath2
 ```
 
 ## Options:
