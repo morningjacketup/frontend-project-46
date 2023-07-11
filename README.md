@@ -18,18 +18,31 @@
 
 [![asciicast](https://asciinema.org/a/YjlwUD2FV8uFCOV3QDK8SQ5ve.svg)](https://asciinema.org/a/YjlwUD2FV8uFCOV3QDK8SQ5ve)
 
-<h2>How to install:</h2>
-- git clone git@github.com:morningjacketup/frontend-project-46.git
+## How to install:
 
-<h2>How to use:</h2>
-  -**node bin/gendiff.js** OR **make gendiff**
+```
+  git clone git@github.com:morningjacketup/frontend-project-46.git
+```
 
-<h2>Options:</h2>
+## How to use:
+
+```
+  node bin/gendiff.js -options filepath1 filepath2
+  make gendiff
+```
+
+## Options:
+
+```
   -h, --help справочная информация
   -f, --format выбор формата для вывода различий
   -v, --version версия утилиты
+```
 
-<h2>Formats: </h2>
-  -stylish форматер по умолчанию
-  -plain вывод результата в формате plain
-  -json вывод результата в формате json
+## Formats:
+
+```
+  stylish форматер по умолчанию
+  plain вывод результата в формате plain
+  json вывод результата в формате json
+```
