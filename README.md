@@ -22,9 +22,10 @@
 
 ```
   Requires:
-  -Node v.18
+  -Node v.18 (or later)
 
   git clone git@github.com:morningjacketup/frontend-project-46.git
+  npm init (v.9.7.2 or later)
 ```
 
 ## How to use:
