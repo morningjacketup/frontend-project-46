@@ -46,7 +46,7 @@ const iter = (obj, depth) => {
 };
 
 const formatStylish = (tree, depth = 1) => {
-  const out = ['{', ...iter(tree, depth), '}'].flat().join('\n');
+  const out = ['{', ...iter(tree, depth), '}'].join('\n');
   return out;
 };
 

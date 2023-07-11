@@ -4,7 +4,7 @@ import parse from './parsers.js';
 import buildTree from './buildTree.js';
 import getFormat from './formatters/index.js';
 
-const buildPath = (filepath) => path.resolve(process.cwd(filepath), filepath);
+const buildPath = (filepath) => path.resolve(process.cwd(), filepath);
 
 const getFileFormat = (filepath) => path.extname(filepath).substring(1, filepath.length - 1);
 
