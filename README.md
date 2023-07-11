@@ -21,6 +21,7 @@
 ## How to install:
 
 ```
+  Requires: Node v.18
   git clone git@github.com:morningjacketup/frontend-project-46.git
 ```
 
